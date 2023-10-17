@@ -7,7 +7,7 @@ import java.net.*;
 import java.util.ArrayList;
 
 public class Worttrainer {
-    private ArrayList<Wortpaare> wortpaare;
+    private ArrayList<Wortpaare> wordpairs;
     private SaveType saveStrategy;
     private String file;
     private int currentCard;
@@ -16,7 +16,7 @@ public class Worttrainer {
     private int tries;
     public Worttrainer(String filePath) {
         this.file = filePath;
-        this.wortpaare = new ArrayList<Wortpaare>();
+        this.wordpairs = new ArrayList<Wortpaare>();
         this.saveStrategy = new JSONSafe();
         this.currentCard = 0;
         this.correctAnswers = 0;
@@ -24,7 +24,7 @@ public class Worttrainer {
         this.tries = 0;
     }
     public Wortpaare getCardAt(int index) {
-        return this.wortpaare.get(index);
+        return this.wordpairs.get(index);
     }
 
     public SaveType getSaveStrategy() {
@@ -36,11 +36,11 @@ public class Worttrainer {
     }
 
     public ArrayList<Wortpaare> getWordCards() {
-        return wortpaare;
+        return wordpairs;
     }
 
     public void setWordCards(ArrayList<Wortpaare> wordCards) {
-        this.wortpaare = wordCards;
+        this.wordpairs = wordCards;
     }
 
     public String getFilePath() {
@@ -84,11 +84,11 @@ public class Worttrainer {
     }
 
     public void clearCards() {
-        this.wortpaare.clear();
+        this.wordpairs.clear();
     }
 
     public void addCard(Wortpaare card) {
-        this.wortpaare.add(card);
+        this.wordpairs.add(card);
     }
     private Image getImage() {
         Image img = null;
