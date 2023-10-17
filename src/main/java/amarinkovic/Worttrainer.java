@@ -39,7 +39,7 @@ public class Worttrainer {
         return wordpairs;
     }
 
-    public void setWordCards(ArrayList<Wortpaare> wordCards) {
+    public void setWordPair(ArrayList<Wortpaare> wordCards) {
         this.wordpairs = wordCards;
     }
 
@@ -47,7 +47,7 @@ public class Worttrainer {
         return file;
     }
 
-    public int getCurrentCard() {
+    public int getCurrentPair() {
         return currentCard;
     }
 
@@ -83,11 +83,11 @@ public class Worttrainer {
         this.tries = tries;
     }
 
-    public void clearCards() {
+    public void clearPairs() {
         this.wordpairs.clear();
     }
 
-    public void addCard(Wortpaare card) {
+    public void addPair(Wortpaare card) {
         this.wordpairs.add(card);
     }
     private Image getImage() {
@@ -101,5 +101,22 @@ public class Worttrainer {
             throw new RuntimeException(e);
         }
         return img;
+    }
+    private void randomizePairs() {
+        // Shuffle array
+        for (int i = 0; i < this.wordpairs.size(); i++) {
+            int randomIndexToSwap = (int) (Math.random() * this.wordpairs.size());
+            Wortpaare temp = this.wordpairs.get(randomIndexToSwap);
+            this.wordpairs.set(randomIndexToSwap, this.wordpairs.get(i));
+            this.wordpairs.set(i, temp);
+        }
+    }
+
+    public void resetStats() {
+        this.currentCard = 0;
+        this.correctAnswers = 0;
+        this.wrongAnswers = 0;
+        this.tries = 0;
+        randomizePairs();
     }
 }
