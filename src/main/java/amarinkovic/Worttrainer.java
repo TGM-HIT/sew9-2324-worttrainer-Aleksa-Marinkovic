@@ -25,13 +25,13 @@ public class Worttrainer {
         this.tries = 0;
 
         this.wordpairs.add(new Wortpaare("https://image.stern.de/33481110/t/XY/v1/w1440/r1.7778/-/hund.jpg", "Hund"));
-        this.wordpairs.add(new Wortpaare("https://media.os.fressnapf.com/cms/2020/05/Ratgeber-Katze-Gesundheit-KatzeWiese_1200x527.jpg?t=seoimg_937", "Katze"));
+        this.wordpairs.add(new Wortpaare("https://media.os.fressnapf.com/cms/2020/05/Ratgeber-Katze-Gesundheit-KatzeWiese_1200x527.jpg", "Katze"));
 
         load();
     }
 
     public static void main(String[] args) {
-        Worttrainer wt = new Worttrainer("src/main/java/amarinkovic/wordpairs.json");
+        Worttrainer wt = new Worttrainer("src/test/resources/wordpairs.json");
         wt.play();
     }
     public void play() {

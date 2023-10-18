@@ -6,8 +6,9 @@ public class Wortpaare {
     private String bildURL;
 
     public Wortpaare(String bildURL, String wort) {
-        this.wort = wort;
-        this.bildURL = bildURL;
+        setBildURL(bildURL);
+        setWort(wort);
+
     }
 
     public String getWort() {
@@ -18,14 +19,15 @@ public class Wortpaare {
         return bildURL;
     }
 
-    public void setWort(String wort) {
+    public void setBildURL(String bildURL) {
         if(!bildURL.endsWith(".png") && !bildURL.endsWith(".jpg") && !bildURL.endsWith(".jpeg")) {
             throw new IllegalArgumentException("URL is not an image!");
         }
+        this.bildURL = bildURL;
     }
 
-    public void setBildURL(String bildURL) {
-        this.bildURL = bildURL;
+    public void setWort(String wort) {
+        this.wort = wort;
     }
     public String toString() {
         return this.wort + ":" + this.bildURL;
