@@ -22,6 +22,8 @@ public class Worttrainer {
         this.correctAnswers = 0;
         this.wrongAnswers = 0;
         this.tries = 0;
+
+        load();
     }
     public Wortpaare getCardAt(int index) {
         return this.wordpairs.get(index);
@@ -35,7 +37,7 @@ public class Worttrainer {
         this.saveStrategy = saveStrategy;
     }
 
-    public ArrayList<Wortpaare> getWordCards() {
+    public ArrayList<Wortpaare> getWordPairs() {
         return wordpairs;
     }
 
@@ -118,5 +120,23 @@ public class Worttrainer {
         this.wrongAnswers = 0;
         this.tries = 0;
         randomizePairs();
+    }
+    public void load() {
+        Worttrainer loaded = this.saveStrategy.load(this.file, this);
+        if(loaded != null) {
+            this.wordpairs = loaded.getWordPairs();
+            this.currentCard = loaded.getCurrentPair();
+            this.correctAnswers = loaded.getCorrectAnswers();
+            this.wrongAnswers = loaded.getWrongAnswers();
+            this.tries = loaded.getTries();
+        }
+    }
+
+    public void save() {
+        try {
+            this.saveStrategy.save(this.file, this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

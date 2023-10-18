@@ -8,12 +8,12 @@ import java.util.ArrayList;
 
 public class JSONSafe implements SaveType{
     @Override
-    public void safe(String path, Worttrainer worttrainer) throws IOException {
+    public void save(String path, Worttrainer worttrainer) throws IOException {
         if(!new File(path).exists()) new File(path).createNewFile();
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("wordPairs", worttrainer.getWordCards());
-        jsonObject.put("currentCard", worttrainer.getCurrentCard());
+        jsonObject.put("wordPairs", worttrainer.getWordPairs());
+        jsonObject.put("currentCard", worttrainer.getCurrentPair());
         jsonObject.put("correctAnswers", worttrainer.getCorrectAnswers());
         jsonObject.put("wrongAnswers", worttrainer.getWrongAnswers());
         jsonObject.put("tries", worttrainer.getTries());
@@ -32,7 +32,7 @@ public class JSONSafe implements SaveType{
             String content = new String(Files.readAllBytes(Paths.get(file.toURI())));
 
             JSONObject jsonObject = new JSONObject(content);
-            worttrainer.setWordCards(convertJSONArrayToArrayList(jsonObject.getJSONArray("wordCards")));
+            worttrainer.setWordPair(convertJSONArrayToArrayList(jsonObject.getJSONArray("wordCards")));
             worttrainer.setCurrentCard(jsonObject.getInt("currentCard"));
             worttrainer.setCorrectAnswers(jsonObject.getInt("correctAnswers"));
             worttrainer.setWrongAnswers(jsonObject.getInt("wrongAnswers"));
