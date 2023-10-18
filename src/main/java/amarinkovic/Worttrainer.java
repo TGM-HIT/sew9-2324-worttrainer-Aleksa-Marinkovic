@@ -1,6 +1,7 @@
 package amarinkovic;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.*;
@@ -10,7 +11,7 @@ public class Worttrainer {
     private ArrayList<Wortpaare> wordpairs;
     private SaveType saveStrategy;
     private String file;
-    private int currentCard;
+    private int currentPair;
     private int correctAnswers;
     private int wrongAnswers;
     private int tries;
@@ -18,12 +19,47 @@ public class Worttrainer {
         this.file = filePath;
         this.wordpairs = new ArrayList<Wortpaare>();
         this.saveStrategy = new JSONSafe();
-        this.currentCard = 0;
+        this.currentPair = 0;
         this.correctAnswers = 0;
         this.wrongAnswers = 0;
         this.tries = 0;
 
+        this.wordpairs.add(new Wortpaare("https://image.stern.de/33481110/t/XY/v1/w1440/r1.7778/-/hund.jpg", "Hund"));
+        this.wordpairs.add(new Wortpaare("https://media.os.fressnapf.com/cms/2020/05/Ratgeber-Katze-Gesundheit-KatzeWiese_1200x527.jpg?t=seoimg_937", "Katze"));
+
         load();
+    }
+
+    public static void main(String[] args) {
+        Worttrainer wt = new Worttrainer("src/main/java/amarinkovic/wordpairs.json");
+        wt.play();
+    }
+    public void play() {
+        if(currentPair >= this.wordpairs.size()) this.resetStats();
+        if(currentPair == 0) randomizePairs(); // Randomize cards if first time playing
+        while(currentPair < this.wordpairs.size()) {
+            Image img = getImage();
+
+            String res = (String) JOptionPane.showInputDialog(null, "Wie heisst das Wort auf dem Bild?",
+                    "Word Trainer", JOptionPane.QUESTION_MESSAGE, new ImageIcon(img), null, null);
+            if(res.isEmpty()) {
+                save();
+                return;
+            }
+            boolean guessed = res.equalsIgnoreCase(getCardAt(currentPair).getWort());
+            if(guessed) {
+                this.correctAnswers++;
+                this.currentPair++;
+            } else {
+                this.wrongAnswers++;
+            }
+            this.tries++;
+            JOptionPane.showMessageDialog(null, (guessed ? "Richtig!" : "Falsch!") + "\nVersuche: " + tries + "\nRichtig: " + correctAnswers + "\nFalsch: " + wrongAnswers);
+            if(guessed) this.tries = 0;
+            this.save();
+        }
+        resetStats();
+        this.save();
     }
     public Wortpaare getCardAt(int index) {
         return this.wordpairs.get(index);
@@ -50,7 +86,7 @@ public class Worttrainer {
     }
 
     public int getCurrentPair() {
-        return currentCard;
+        return currentPair;
     }
 
     public int getCorrectAnswers() {
@@ -69,8 +105,8 @@ public class Worttrainer {
         this.file = filePath;
     }
 
-    public void setCurrentCard(int currentCard) {
-        this.currentCard = currentCard;
+    public void setCurrentPair(int currentPair) {
+        this.currentPair = currentPair;
     }
 
     public void setCorrectAnswers(int correctAnswers) {
@@ -94,9 +130,9 @@ public class Worttrainer {
     }
     private Image getImage() {
         Image img = null;
-        System.out.println(getCardAt(this.currentCard).getBildURL());
+        System.out.println(getCardAt(this.currentPair).getBildURL());
         try {
-            URL url = new URL(getCardAt(this.currentCard).getBildURL());
+            URL url = new URL(getCardAt(this.currentPair).getBildURL());
             img = ImageIO.read(url);
 
         } catch (IOException e) {
@@ -115,7 +151,7 @@ public class Worttrainer {
     }
 
     public void resetStats() {
-        this.currentCard = 0;
+        this.currentPair = 0;
         this.correctAnswers = 0;
         this.wrongAnswers = 0;
         this.tries = 0;
@@ -125,7 +161,7 @@ public class Worttrainer {
         Worttrainer loaded = this.saveStrategy.load(this.file, this);
         if(loaded != null) {
             this.wordpairs = loaded.getWordPairs();
-            this.currentCard = loaded.getCurrentPair();
+            this.currentPair = loaded.getCurrentPair();
             this.correctAnswers = loaded.getCorrectAnswers();
             this.wrongAnswers = loaded.getWrongAnswers();
             this.tries = loaded.getTries();

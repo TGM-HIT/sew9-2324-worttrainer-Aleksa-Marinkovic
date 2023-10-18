@@ -5,7 +5,7 @@ public class Wortpaare {
     private String wort;
     private String bildURL;
 
-    public Wortpaare(String wort, String bildURL) {
+    public Wortpaare(String bildURL, String wort) {
         this.wort = wort;
         this.bildURL = bildURL;
     }
